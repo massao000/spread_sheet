@@ -10,7 +10,7 @@ genre_list = ['SF/ファンタジー', 'メカ/ロボット', 'アクション/�
              ]
 
 x_layout = [
-        [sg.Text('jsonファイル', size=(17, 1)), sg.Input(), sg.FileBrowse('ファイル選択', key='jsonfile', button_color=('midnightblue', '#87cefa'), file_types=(("json Files", ".json"),))],
+        [sg.Text('jsonファイル', size=(17, 1)), sg.Input('ボタンを押してjson選択->'), sg.FileBrowse('ファイル選択', key='jsonfile', button_color=('midnightblue', '#87cefa'), file_types=(("json Files", ".json"),))],
         [sg.Text('スプレッドシートキー', size=(17, 1)), sg.InputText('', key='spkey')],
         [sg.Text('シート', size=(17, 1)), sg.Combo(('シート１', 'シート２', 'シート３', 'シート４'), default_value='シート１', size=(10, 1), key='sheet')],
         ]
