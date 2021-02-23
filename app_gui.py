@@ -97,6 +97,7 @@ while True:
 
     test = requests.get(exists_sheet_key).status_code
     print(test)
+    # tryを使って処理をさせる
     if test != 404:
         if values['sheet'] == 'シート１':
             ws = connect_gspread(jsonf,spread_sheet_key).get_worksheet(0)
