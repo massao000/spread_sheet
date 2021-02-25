@@ -99,14 +99,18 @@ while True:
     print(test)
     # tryを使って処理をさせる
     if test != 404:
-        if values['sheet'] == 'シート１':
-            ws = connect_gspread(jsonf,spread_sheet_key).get_worksheet(0)
-        elif values['sheet'] == 'シート２':
-            ws = connect_gspread(jsonf,spread_sheet_key).get_worksheet(1)
-        elif values['sheet'] == 'シート３':
-            ws = connect_gspread(jsonf,spread_sheet_key).get_worksheet(2)
-        elif values['sheet'] == 'シート４':
-            ws = connect_gspread(jsonf,spread_sheet_key).get_worksheet(3)
+        try:
+            if values['sheet'] == 'シート１':
+                ws = connect_gspread(jsonf,spread_sheet_key).get_worksheet(0)
+            elif values['sheet'] == 'シート２':
+                ws = connect_gspread(jsonf,spread_sheet_key).get_worksheet(1)
+            elif values['sheet'] == 'シート３':
+                ws = connect_gspread(jsonf,spread_sheet_key).get_worksheet(2)
+            elif values['sheet'] == 'シート４':
+                ws = connect_gspread(jsonf,spread_sheet_key).get_worksheet(3)
+        except:
+            sg.popup_error('jsonファイルが正しくありません')
+            continue
     else:
         sg.Popup('シートが存在しません')
         continue

@@ -29,3 +29,6 @@
     スプレッドシートの表をアプリの方に読み込めるようにした
     設定画面の調整
 2021/02/23
+
+ドキュメントに書き換える
+https://docs.google.com/document/d/1UrglS46FOiCdkNPp6L4YOzO7fJ3nr0iYCImu197AU7I/edit
