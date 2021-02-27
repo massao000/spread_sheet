@@ -128,6 +128,7 @@ while True:
         cell_list = ws.get_all_values()
         row_list = ws.row_values(1)
         ll = ['タイトル', 'n期ID', 'ジャンルID１', 'ジャンルID２', '年月日', '四季コード', '視聴コード', '公式ページ', 'wiki']
+        
         if row_list != ll[0]:
             for i, value in zip(string.ascii_letters, ll):
                 ws.update_acell(i + "1", value)
@@ -141,8 +142,9 @@ while True:
         
 
     if event == 'display': # 2枚のウィンドウが表示される
-        sg.popup('シートを表示中はこちらの画面の操作はできません。')
+        sg.popup_yes_no('シートを表示中はこちらの画面の操作はできません。', button_color=('midnightblue', '#87cefa'))
         seat_display = ws.get_all_values()
+        
         second_layoutx = [[sg.Table(seat_display[1:], headings=seat_display[0], auto_size_columns=False, vertical_scroll_only=False,
                     display_row_numbers=True,
                     header_text_color='#001e43', header_background_color='#a2c2e6',
