@@ -139,7 +139,6 @@ while True:
             for j in writing:
                 ws.append_row(j)
                 time.sleep(0.8)
-        
 
     if event == 'display': # 2枚のウィンドウが表示される
         sg.popup_yes_no('シートを表示中はこちらの画面の操作はできません。', button_color=('midnightblue', '#87cefa'))
@@ -165,7 +164,5 @@ while True:
 
     col_list = ws.col_values(1)
     print(col_list)
-
-
 
 window.close()
