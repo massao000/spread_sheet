@@ -9,6 +9,14 @@ genre_list = ['SF/ファンタジー', 'メカ/ロボット', 'アクション/�
               'アイドル', '音楽', '学園', '戦艦'
              ]
 
+x_list = {'SF/ファンタジー': 1, 'メカ/ロボット': 2, 'アクション/バトル': 3, 'コメディ/ギャグ': 4, 
+              '恋愛/ラブコメ': 5, '日常/ほのぼの': 6, 'スポーツ/競技': 7, 'ホラー/サスペンス/推理': 8,
+              '歴史/戦記': 9, '戦争/ミリタリー': 10, 'ドラマ/青春': 11, 'ショート': 12,
+              '百合(GL)': 13, 'BL': 14, 'ハーレム': 15, '異世界': 16,
+              'アイドル': 17, '音楽': 18, '学園': 19, '戦艦': 20
+            }
+
+
 x_layout = [
         [sg.Text('jsonファイル', size=(17, 1)), sg.Input('ボタンを押してjson選択->'), sg.FileBrowse('ファイル選択', key='jsonfile', button_color=('midnightblue', '#87cefa'), file_types=(("json Files", ".json"),))],
         [sg.Text('スプレッドシートキー', size=(17, 1)), sg.InputText('', key='spkey')],
@@ -16,9 +24,6 @@ x_layout = [
         ]
 
 tab1_layout = [
-        # [sg.Text('jsonファイル', size=(17, 1)), sg.Input(), sg.FileBrowse('ファイル選択', key='jsonfile', button_color=('midnightblue', '#87cefa'), file_types=(("json Files", ".json"),))],
-        # [sg.Text('スプレッドシートキー', size=(17, 1)), sg.InputText('', key='spkey')],
-        # [sg.Text('シート', size=(17, 1)), sg.Combo(('シート１', 'シート２', 'シート３', 'シート４'), default_value='シート１', size=(10, 1), key='sheet')],
         [sg.Text('アニメタイトル', size=(17, 1)), sg.InputText('銀魂', key='tatal')],
         [sg.Frame(layout=[
                          [sg.Radio('未視聴', "RADIO1"), sg.Radio('視聴中', "RADIO1"), sg.Radio('視聴済み', "RADIO1", default=True)],
@@ -123,6 +128,7 @@ while True:
         
         wiki     = wiki_url(values['tatal'])
         official = official_url(values['tatal']) # 検索中に何かを出してもいいかも知らない
+
         writing  = [[values['tatal'], period(values), genre(values['genre_first']), genre(values['genre_second']), '年', '四季', watching_nau(values), official, wiki]]
 
         cell_list = ws.get_all_values()
@@ -144,7 +150,14 @@ while True:
         sg.popup_yes_no('シートを表示中はこちらの画面の操作はできません。', button_color=('midnightblue', '#87cefa'))
         seat_display = ws.get_all_values()
         
-        second_layoutx = [[sg.Table(seat_display[1:], headings=seat_display[0], auto_size_columns=False, vertical_scroll_only=False,
+        # 列の取得をして
+        alphabet = [chr(i) for i in range(65, 65 + len(seat_display))]
+
+        count_n = [x for x, i in enumerate(alphabet, 1)]
+
+        alphabet_n = [chr(i) for i in range(65, 65 + len(seat_display[0]))]
+
+        second_layout1 = [[sg.Table(seat_display[1:], headings=seat_display[0], auto_size_columns=False, vertical_scroll_only=False,
                     display_row_numbers=True,
                     header_text_color='#001e43', header_background_color='#a2c2e6',
                     def_col_width=15, num_rows=15, text_color='black',
@@ -153,16 +166,37 @@ while True:
                     [sg.Button('exit', button_color=('midnightblue', '#87cefa'))]
                     ]
 
-        second_Window = sg.Window('アニメ管理 読み込み', second_layoutx)
+        second_layout_update = [
+            [sg.Text('test')],
+            [sg.Combo((alphabet_n), size=(5, 5), key='line'), sg.Combo(count_n, size=(5, 5), key='column')],
+            [sg.Text('', key='line_text'), sg.Text('', key='column_text')], # コンボで選択された文字が表示されるようにする
+            [sg.Button('実行')]
+        ]
+        second_layout_delete = [
+            [sg.Text('test')],
+        ]
+                
+        second_layout = [
+            [sg.TabGroup([
+                [sg.Tab('更新', second_layout_update),
+                sg.Tab('消去', second_layout_delete)
+                ]]
+            )],
+            [sg.Frame('シート', second_layout1)],
+            ]
+
+        second_Window = sg.Window('アニメ管理 読み込み', second_layout)
         while True:
             second_event, second_values = second_Window.read()
+            print(second_event, second_values)
 
             if second_event is None or second_event == 'exit': # 反応はしているが画面が消えない
                 print('eee')
                 break
+
         second_Window.close()
 
-    col_list = ws.col_values(1)
-    print(col_list)
+    # col_list = ws.col_values(1)
+    # print(col_list)
 
 window.close()
