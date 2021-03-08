@@ -133,7 +133,7 @@ while True:
 
         cell_list = ws.get_all_values()
         row_list = ws.row_values(1)
-        ll = ['タイトル', 'n期ID', 'ジャンルID１', 'ジャンルID２', '年月日', '四季コード', '視聴コード', '公式ページ', 'wiki']
+        ll = ['タイトル', 'n期ID', 'ジャンルID 1', 'ジャンルID 2', '年月日', '四季コード', '視聴コード', '公式ページ', 'wiki']
         
         if row_list != ll[0]:
             for i, value in zip(string.ascii_letters, ll):
@@ -157,6 +157,7 @@ while True:
 
         alphabet_n = [chr(i) for i in range(65, 65 + len(seat_display[0]))]
 
+
         second_layout1 = [[sg.Table(seat_display[1:], headings=seat_display[0], auto_size_columns=False, vertical_scroll_only=False,
                     display_row_numbers=True,
                     header_text_color='#001e43', header_background_color='#a2c2e6',
@@ -169,7 +170,7 @@ while True:
         second_layout_update = [
             [sg.Combo((seat_display[0]), size=(23, 5), change_submits=True, key='line'), sg.Combo(count_n, size=(5, 5), change_submits=True, key='column')],
             [sg.Text('?', key='line_text', size=(10, 1)), sg.Text('列の'), sg.Text('?', key='column_text'), sg.Text('行の編集')],
-            [sg.Button('実行')]
+            [sg.Button('実行', button_color=('midnightblue', '#87cefa'))]
         ]
         second_layout_delete = [
             [sg.Text('test')],
@@ -187,18 +188,32 @@ while True:
         second_Window = sg.Window('アニメ管理 読み込み', second_layout)
         while True:
             second_event, second_values = second_Window.read()
-            
+
             text_elem = second_Window.FindElement('line_text')
             text_elem.Update(second_values['line'])
 
-            text_elem2 = second_Window.FindElement('column_text')
-            text_elem2.Update(second_values['column'])
+            text_elem = second_Window.FindElement('column_text')
+            text_elem.Update(second_values['column'])
+            
+
 
             print(second_event, second_values)
 
             if second_event is None or second_event == 'exit': # 反応はしているが画面が消えない
                 print('eee')
                 break
+
+            if second_event == '実行':
+                if second_values['line'] == '':
+                    sg.popup_error('列が選択されていません', button_color=('midnightblue', '#87cefa'))
+                    continue
+                if second_values['column'] == '':
+                    sg.popup_error('行が選択されていません', button_color=('midnightblue', '#87cefa'))
+                    continue
+                
+                x = edit(second_values['line'], seat_display[0])
+                print(f"{x}{second_values['column']}")
+
 
         second_Window.close()
 
