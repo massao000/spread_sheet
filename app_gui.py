@@ -195,11 +195,9 @@ while True:
             text_elem = second_Window.FindElement('column_text')
             text_elem.Update(second_values['column'])
             
-
-
             print(second_event, second_values)
 
-            if second_event is None or second_event == 'exit': # 反応はしているが画面が消えない
+            if second_event is None or second_event == 'exit':
                 print('eee')
                 break
 
