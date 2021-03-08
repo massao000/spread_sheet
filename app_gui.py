@@ -19,7 +19,7 @@ x_list = {'SF/ファンタジー': 1, 'メカ/ロボット': 2, 'アクション
 
 x_layout = [
         [sg.Text('jsonファイル', size=(17, 1)), sg.Input('ボタンを押してjson選択->'), sg.FileBrowse('ファイル選択', key='jsonfile', button_color=('midnightblue', '#87cefa'), file_types=(("json Files", ".json"),))],
-        [sg.Text('スプレッドシートキー', size=(17, 1)), sg.InputText('', key='spkey')],
+        [sg.Text('スプレッドシートキー', size=(17, 1)), sg.InputText('', key='spkey'), sg.FileBrowse('ファイル選択', key='jsonfile', button_color=('midnightblue', '#87cefa'), file_types=(("txt Files", ".txt"),))],
         [sg.Text('シート', size=(17, 1)), sg.Combo(('シート１', 'シート２', 'シート３', 'シート４'), default_value='シート１', size=(10, 1), key='sheet')],
         ]
 
@@ -123,13 +123,13 @@ while True:
     if event == '実行ボタン':
         sg.Popup('デバック\n書き込み中にloading画面を出す', event, '\njsonファイル:', values['jsonfile'],'\nスプレッドシートキー:', values['spkey'],
                         '\nシート:', values['sheet'],
-                        '\nアニメタイトル', values['tatal'], '\nアニメジャンル1', genre(values['genre_first']), '\nアニメジャンル2', genre(values['genre_second']),
+                        '\nアニメタイトル', values['tatal'], '\nアニメジャンル1', genre(values['genre_first'], genre_list), '\nアニメジャンル2', genre(values['genre_second'], genre_list),
                         values)
         
         wiki     = wiki_url(values['tatal'])
         official = official_url(values['tatal']) # 検索中に何かを出してもいいかも知らない
 
-        writing  = [[values['tatal'], period(values), genre(values['genre_first']), genre(values['genre_second']), '年', '四季', watching_nau(values), official, wiki]]
+        writing  = [[values['tatal'], period(values), genre(values['genre_first'], genre_list), genre(values['genre_second'], genre_list), '年', '四季', watching_nau(values), official, wiki]]
 
         cell_list = ws.get_all_values()
         row_list = ws.row_values(1)
@@ -153,7 +153,7 @@ while True:
         # 列の取得をして
         alphabet = [chr(i) for i in range(65, 65 + len(seat_display))]
 
-        count_n = [x for x, i in enumerate(alphabet, 1)]
+        count_n = [x for x, i in enumerate(alphabet)]
 
         alphabet_n = [chr(i) for i in range(65, 65 + len(seat_display[0]))]
 
@@ -167,9 +167,8 @@ while True:
                     ]
 
         second_layout_update = [
-            [sg.Text('test')],
-            [sg.Combo((alphabet_n), size=(5, 5), key='line'), sg.Combo(count_n, size=(5, 5), key='column')],
-            [sg.Text('', key='line_text'), sg.Text('', key='column_text')], # コンボで選択された文字が表示されるようにする
+            [sg.Combo((seat_display[0]), size=(23, 5), change_submits=True, key='line'), sg.Combo(count_n, size=(5, 5), change_submits=True, key='column')],
+            [sg.Text('?', key='line_text', size=(10, 1)), sg.Text('列の'), sg.Text('?', key='column_text'), sg.Text('行の編集')],
             [sg.Button('実行')]
         ]
         second_layout_delete = [
@@ -188,6 +187,13 @@ while True:
         second_Window = sg.Window('アニメ管理 読み込み', second_layout)
         while True:
             second_event, second_values = second_Window.read()
+            
+            text_elem = second_Window.FindElement('line_text')
+            text_elem.Update(second_values['line'])
+
+            text_elem2 = second_Window.FindElement('column_text')
+            text_elem2.Update(second_values['column'])
+
             print(second_event, second_values)
 
             if second_event is None or second_event == 'exit': # 反応はしているが画面が消えない

@@ -1,4 +1,5 @@
 import re
+import os
 import time
 import json
 import requests
@@ -88,3 +89,9 @@ def official_url(title):
 #     driver.quit()
     
 #     return title_url
+
+def test(aaa):
+    app_exists_path = os.getcwd()
+    if os.path.exists(f'{app_exists_path}'):
+            with open(f'{app_exists_path}', 'a', encoding='UTF-8')as f:
+                pass
