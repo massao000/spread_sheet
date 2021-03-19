@@ -19,7 +19,7 @@ x_list = {'SF/ファンタジー': 1, 'メカ/ロボット': 2, 'アクション
 
 x_layout = [
         [sg.Text('jsonファイル', size=(17, 1)), sg.Input('ボタンを押してjson選択->'), sg.FileBrowse('ファイル選択', key='jsonfile', button_color=('midnightblue', '#87cefa'), file_types=(("json Files", ".json"),))],
-        [sg.Text('スプレッドシートキー', size=(17, 1)), sg.InputText('', key='spkey'), sg.FileBrowse('ファイル選択', key='jsonfile', button_color=('midnightblue', '#87cefa'), file_types=(("txt Files", ".txt"),))],
+        [sg.Text('スプレッドシートキー', size=(17, 1)), sg.Input('', key='spkey'), sg.FileBrowse('ファイル選択', key='shfile', button_color=('midnightblue', '#87cefa'), file_types=(("txt Files", ".txt"),))],
         [sg.Text('シート', size=(17, 1)), sg.Combo(('シート１', 'シート２', 'シート３', 'シート４'), default_value='シート１', size=(10, 1), key='sheet')],
         ]
 
@@ -75,25 +75,37 @@ while True:
     event, values = window.read()
 
     print(event, values)
+    # print(values['spkey'])
+    # print(values['shfile'])
     # if event == sg.WIN_CLOSED:
     #     break
     if event is None:
         break
+    
+    try:
+        if values['shfile'][-4:] == '.txt':
+            with open(values['spkey'], 'r', encoding='UTF-8') as f:
+                values['spkey'] = f.read()
+                # print('ok')
+                # print(values['spkey'])
+    except :
+        sg.popup_error('一度ファイル選択からtxtファイルを選択したら\nそれ以降ファイルから選択をお願いします', title='file error')
+        continue
 
         ##### タブ５ #####
     if event == 'link':
         webbrowser.open(window['link'].DisplayText)
 
     if values['jsonfile'] == '':
-        sg.popup('jsonファイルが選択されていません', button_color=('midnightblue', '#87cefa'))
+        sg.popup_error('jsonファイルが選択されていません', title='file error')
         continue
 
     elif values['spkey'] == '':
-        sg.popup('スプレッドシートキーが入力されていません', button_color=('midnightblue', '#87cefa'))
+        sg.popup_error('スプレッドシートキーが入力されていません', title='file error')
         continue
     
     elif values['tatal'] == '':
-        sg.popup('アニメタイトルが入力されていません', button_color=('midnightblue', '#87cefa'))
+        sg.popup_error('アニメタイトルが入力されていません', title='file error')
         continue
 
     jsonf = values['jsonfile']
@@ -147,16 +159,22 @@ while True:
                 time.sleep(0.8)
 
     if event == 'display': # 2枚のウィンドウが表示される
-        sg.popup_yes_no('シートを表示中はこちらの画面の操作はできません。', button_color=('midnightblue', '#87cefa'))
-        seat_display = ws.get_all_values()
+        yes_no = sg.popup_yes_no('シートを表示中はこちらの画面の操作はできません。', button_color=('midnightblue', '#87cefa'))
+        # sg.PopupOKCancel('シートを表示中はこちらの画面の操作はできません。', button_color=('midnightblue', '#87cefa'))
+        # print(yes_no)
+        if yes_no == 'No':
+            continue
         
+        seat_display = ws.get_all_values()
+        print(seat_display)
         # 列の取得をして
-        alphabet = [chr(i) for i in range(65, 65 + len(seat_display))]
+        # alphabet = [chr(i) for i in range(65, 65 + len(seat_display))]
+        # alphabet = [chr(i) for i in range(65, 65 + 25)]
 
-        count_n = [x for x, i in enumerate(alphabet)]
+        count_n = [x for x, i in enumerate(seat_display)]
+        # count_n = [x + 1 for x, i in enumerate(alphabet, -1)]
 
         alphabet_n = [chr(i) for i in range(65, 65 + len(seat_display[0]))]
-
 
         second_layout1 = [[sg.Table(seat_display[1:], headings=seat_display[0], auto_size_columns=False, vertical_scroll_only=False,
                     display_row_numbers=True,
@@ -168,18 +186,36 @@ while True:
                     ]
 
         second_layout_update = [
-            [sg.Combo((seat_display[0]), size=(23, 5), change_submits=True, key='line'), sg.Combo(count_n, size=(5, 5), change_submits=True, key='column')],
-            [sg.Text('?', key='line_text', size=(10, 1)), sg.Text('列の'), sg.Text('?', key='column_text'), sg.Text('行の編集')],
+            [sg.Combo((seat_display[0]), size=(23, 5), change_submits=True, key='line'), sg.Combo(count_n[:-1], size=(5, 5), change_submits=True, key='column')],
+            [sg.Text('?', key='line_text', size=(10, 1)), sg.Text('列の'), sg.Text('?', size=(4, 1), key='column_text'), sg.Text('行の編集')],
+            [sg.Input('')],
             [sg.Button('実行', button_color=('midnightblue', '#87cefa'))]
         ]
+
         second_layout_delete = [
             [sg.Text('test')],
+        ]
+
+        second_layout_all_update = [
+            [sg.Combo(count_n[:-1], size=(5, 5), change_submits=True, key='all_column')],
+            [sg.Text('?', size=(4, 1), key='all_column_text'), sg.Text('行の編集')],
+            [sg.Text('アニメタイトル', size=(17, 1)), sg.InputText('', key='all_update_tatal')],
+            [sg.Frame(layout=[
+                             [sg.Radio('未視聴', "RADIO1"), sg.Radio('視聴中', "RADIO1"), sg.Radio('視聴済み', "RADIO1", default=True)],
+                             ], title='視聴状態'), 
+                                sg.Combo((genre_list), default_value='アニメジャンル1', size=(23, 5), key='all_update_genre_first'),
+                                sg.Combo((genre_list), default_value='アニメジャンル2', size=(23, 5), key='all_update_genre_second')],
+            [sg.Frame(layout=[
+            [sg.Radio('1期', "RADIO2", default=True), sg.Radio('2期', "RADIO2"), sg.Radio('3期', "RADIO2"), sg.Radio('4期', "RADIO2"), sg.Radio('5期以上', "RADIO2"), sg.Radio('短編', "RADIO2"), sg.Radio('長期', "RADIO2"), sg.Radio('映画', "RADIO2")]
+            ], title='何期か選択')],
+            [sg.Button('実行ボタン', pad=(235, 13), size=(17,1), button_color=('midnightblue', '#87cefa'))]
         ]
                 
         second_layout = [
             [sg.TabGroup([
                 [sg.Tab('更新', second_layout_update),
-                sg.Tab('消去', second_layout_delete)
+                sg.Tab('消去', second_layout_delete),
+                sg.Tab('列更新', second_layout_all_update)
                 ]]
             )],
             [sg.Frame('シート', second_layout1)],
@@ -194,6 +230,9 @@ while True:
 
             text_elem = second_Window.FindElement('column_text')
             text_elem.Update(second_values['column'])
+            
+            text_elem = second_Window.FindElement('all_column_text')
+            text_elem.Update(second_values['all_column'])
             
             print(second_event, second_values)
 
@@ -210,7 +249,11 @@ while True:
                     continue
                 
                 x = edit(second_values['line'], seat_display[0])
-                print(f"{x}{second_values['column']}")
+                # print(type(second_values['column']))
+                print(f"特定:{x}{second_values['column'] + 2}")
+                for j in alphabet_n:
+                    print(f"all {j}{second_values['column'] + 2}")
+                
 
 
         second_Window.close()

@@ -32,9 +32,9 @@ def watching_nau(values):
 def genre(values, category):
     name = ""
     if values == "アニメジャンル1":
-        name = 'null'
+        name = 0
     elif values == "アニメジャンル2":
-        name = 'null'
+        name = 0
     else:
         while True:
             for number, i in enumerate(category, 1):
