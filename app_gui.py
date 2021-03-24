@@ -2,21 +2,19 @@ from package import *
 
 sg.theme("dark blue")
 
-genre_list = ['SF/ファンタジー', 'メカ/ロボット', 'アクション/バトル', 'コメディ/ギャグ', 
+genre_list = ['なし', 'SF/ファンタジー', 'メカ/ロボット', 'アクション/バトル', 'コメディ/ギャグ', 
               '恋愛/ラブコメ', '日常/ほのぼの', 'スポーツ/競技', 'ホラー/サスペンス/推理',
               '歴史/戦記', '戦争/ミリタリー', 'ドラマ/青春', 'ショート',
               '百合(GL)', 'BL', 'ハーレム', '異世界',
               'アイドル', '音楽', '学園', '戦艦'
              ]
 
-x_list = {'SF/ファンタジー': 1, 'メカ/ロボット': 2, 'アクション/バトル': 3, 'コメディ/ギャグ': 4, 
-              '恋愛/ラブコメ': 5, '日常/ほのぼの': 6, 'スポーツ/競技': 7, 'ホラー/サスペンス/推理': 8,
-              '歴史/戦記': 9, '戦争/ミリタリー': 10, 'ドラマ/青春': 11, 'ショート': 12,
-              '百合(GL)': 13, 'BL': 14, 'ハーレム': 15, '異世界': 16,
-              'アイドル': 17, '音楽': 18, '学園': 19, '戦艦': 20
-            }
-
-ssss = ['1期', '2期', '3期', '4期', '5期以上', '短編', '長期', '映画']
+# x_list = {'SF/ファンタジー': 1, 'メカ/ロボット': 2, 'アクション/バトル': 3, 'コメディ/ギャグ': 4, 
+#               '恋愛/ラブコメ': 5, '日常/ほのぼの': 6, 'スポーツ/競技': 7, 'ホラー/サスペンス/推理': 8,
+#               '歴史/戦記': 9, '戦争/ミリタリー': 10, 'ドラマ/青春': 11, 'ショート': 12,
+#               '百合(GL)': 13, 'BL': 14, 'ハーレム': 15, '異世界': 16,
+#               'アイドル': 17, '音楽': 18, '学園': 19, '戦艦': 20
+#             }
 
 x_layout = [
         [sg.Text('jsonファイル', size=(17, 1)), sg.Input('ボタンを押してjson選択->'), sg.FileBrowse('ファイル選択', key='jsonfile', button_color=('midnightblue', '#87cefa'), file_types=(("json Files", ".json"),))],
@@ -70,6 +68,7 @@ layout = [
     )]
     ]
 
+hiduke = str(datetime.date.today())
 # [sg.Text('(Almost) All widgets in one Window!', size=(30, 1), justification='center', font=("Helvetica", 25), relief=sg.RELIEF_RIDGE)]
 window = sg.Window('アニメ管理', layout)
 window['link'].set_cursor(cursor='hand2')
@@ -155,13 +154,12 @@ while True:
         
         wiki     = wiki_url(values['tatal'])
         official = official_url(values['tatal']) # 検索中に何かを出してもいいかも知らない
-        hiduke = str(datetime.date.today())
 
-        writing  = [[values['tatal'], period(values), genre(values['genre_first'], genre_list), genre(values['genre_second'], genre_list), hiduke, '四季', watching_nau(values), official, wiki]]
+        writing  = [[hiduke, values['tatal'], period(list(values.items())[11:-1]), genre(values['genre_first'], genre_list), genre(values['genre_second'], genre_list), '四季', watching_nau(list(values.items())[6:9]), official, wiki]]
 
         cell_list = ws.get_all_values()
         row_list = ws.row_values(1)
-        ll = ['タイトル', 'n期ID', 'ジャンルID 1', 'ジャンルID 2', '書き込み日', '四季コード', '視聴コード', '公式ページ', 'wiki']
+        ll = ['書き込み日', 'タイトル', 'n期ID', 'ジャンルID 1', 'ジャンルID 2', '四季コード', '視聴コード', '公式ページ', 'wiki']
         
         if row_list != ll[0]:
             for i, value in zip(string.ascii_letters, ll):
@@ -184,6 +182,9 @@ while True:
         
         seat_display = ws.get_all_values()
         print(seat_display)
+
+        nki = ['1期', '2期', '3期', '4期', '5期以上', '短編', '長期', '映画']
+        sityou = ['未視聴', '視聴中', '視聴済み']
         # 列の取得をして
         # alphabet = [chr(i) for i in range(65, 65 + len(seat_display))]
         # alphabet = [chr(i) for i in range(65, 65 + 25)]
@@ -203,25 +204,37 @@ while True:
                     ]
 
         second_layout_update = [
+            # [sg.Frame(layout=[
+            #     [sg.Combo((seat_display[0]), size=(23, 5), change_submits=True, key='line'), sg.Combo(count_n[:-1], size=(5, 5), change_submits=True, key='column')],
+            #     [sg.Text('?', key='line_text', size=(10, 1)), sg.Text('列の'), sg.Text('?', size=(4, 1), key='column_text'), sg.Text('行の編集')]], title='行列の選択')],
             [sg.Frame(layout=[
-                [sg.Combo((seat_display[0]), size=(23, 5), change_submits=True, key='line'), sg.Combo(count_n[:-1], size=(5, 5), change_submits=True, key='column')],
-                [sg.Text('?', key='line_text', size=(10, 1)), sg.Text('列の'), sg.Text('?', size=(4, 1), key='column_text'), sg.Text('行の編集')]], title='行列の選択')],
+                [sg.Combo(count_n[:-1], size=(5, 5), change_submits=True, key='column'), sg.Text(size=(4, 1), key='column_text'), sg.Text('行の編集')],
+                [sg.Text('アニメタイトル'), sg.InputText(key='title_text')],
+                [sg.Button('実行', key='title_ud', button_color=('midnightblue', '#87cefa'))]], title='タイトルの更新'), sg.Frame(layout=[
+                    [sg.Combo(count_n[:-1], size=(5, 5), change_submits=True, key='column2'), sg.Text(size=(4, 1), key='column_text2'), sg.Text('行の編集')],
+                    [sg.Radio(i, "RADIO3") for i in nki[:4]],
+                    [sg.Radio(i, "RADIO3") for i in nki[4:]],
+                    # [sg.Radio('1期', "RADIO3"), sg.Radio('2期', "RADIO3"), sg.Radio('3期', "RADIO3"), sg.Radio('4期', "RADIO3")],
+                    # [sg.Radio('5期以上', "RADIO3"), sg.Radio('短編', "RADIO3"), sg.Radio('長期', "RADIO3"), sg.Radio('映画', "RADIO3")],
+                    [sg.Button('実行', key='period_ud', button_color=('midnightblue', '#87cefa'))]], title='何期か選択')],
             [sg.Frame(layout=[
-                [sg.Text('アニメタイトル'), sg.InputText(key='')],
-                [sg.Button('実行', button_color=('midnightblue', '#87cefa'))]], title='タイトルの更新'), sg.Frame(layout=[
-                    [sg.Radio('1期', "RADIO6"), sg.Radio('2期', "RADIO6"), sg.Radio('3期', "RADIO6"), sg.Radio('4期', "RADIO6")],
-                    [sg.Radio('5期以上', "RADIO6"), sg.Radio('短編', "RADIO6"), sg.Radio('長期', "RADIO6"), sg.Radio('映画', "RADIO2")],
-                    [sg.Button('実行', key='', button_color=('midnightblue', '#87cefa'))]], title='何期か選択')],
+                [sg.Combo(count_n[:-1], size=(5, 5), change_submits=True, key='column3'), sg.Text(size=(4, 1), key='column_text3'), sg.Text('行の編集')],
+                [sg.Combo((genre_list), default_value='アニメジャンル1', size=(23, 5), key='genre_first_ud')],
+                [sg.Button('実行', key='genre_ud1', button_color=('midnightblue', '#87cefa'))]], title='ジャンルの更新1'), sg.Frame(layout=[
+                    [sg.Combo(count_n[:-1], size=(5, 5), change_submits=True, key='column4'), sg.Text(size=(4, 1), key='column_text4'), sg.Text('行の編集')],
+                    [sg.Combo((genre_list), default_value='アニメジャンル2', size=(23, 5), key='genre_second_ud')],
+                [sg.Button('実行', key='genre_ud2', button_color=('midnightblue', '#87cefa'))]], title='ジャンルの更新2'), sg.Frame(layout=[
+                    [sg.Combo(count_n[:-1], size=(5, 5), change_submits=True, key='column5'), sg.Text(size=(4, 1), key='column_text5'), sg.Text('行の編集')],
+                    [sg.Radio(i, "RADIO4") for i in sityou],
+                    # [sg.Radio('未視聴', "RADIO4"), sg.Radio('視聴中', "RADIO4"), sg.Radio('視聴済み', "RADIO4")],
+                    [sg.Button('実行', key='status_ud', button_color=('midnightblue', '#87cefa'))]], title='視聴状態の更新')],
             [sg.Frame(layout=[
-                [sg.Combo((genre_list), default_value='アニメジャンル1', size=(23, 5), key=''),
-                sg.Combo((genre_list), default_value='アニメジャンル2', size=(23, 5), key='')],
-                [sg.Button('実行', key='', button_color=('midnightblue', '#87cefa'))]], title='ジャンルの更新'), sg.Frame(layout=[
-                    [sg.Radio('未視聴', "RADIO3"), sg.Radio('視聴中', "RADIO3"), sg.Radio('視聴済み', "RADIO3", default=True)],
-                    [sg.Button('実行', key='status', button_color=('midnightblue', '#87cefa'))]], title='視聴状態の更新')],
-            [sg.Frame(layout=[
-                [sg.InputText(key='')],
-                [sg.Button('実行', key='', button_color=('midnightblue', '#87cefa'))]], title='公式ページ変更'),sg.Frame(layout=[
-                [sg.InputText(key='')],[sg.Button('実行', key='', button_color=('midnightblue', '#87cefa'))]], title='wikiの変更')],
+                [sg.Combo(count_n[:-1], size=(5, 5), change_submits=True, key='column6'), sg.Text(size=(4, 1), key='column_text6'), sg.Text('行の編集')],
+                [sg.InputText(key='official_url_text')],
+                [sg.Button('実行', key='official_url_ud', button_color=('midnightblue', '#87cefa'))]], title='公式ページ変更'),sg.Frame(layout=[
+                    [sg.Combo(count_n[:-1], size=(5, 5), change_submits=True, key='column7'), sg.Text(size=(4, 1), key='column_text7'), sg.Text('行の編集')],
+                    [sg.InputText(key='wiki_url_text')],
+                    [sg.Button('実行', key='wiki_url_ud', button_color=('midnightblue', '#87cefa'))]], title='wikiの変更')],
         ]
 
         second_layout_delete = [
@@ -229,25 +242,25 @@ while True:
         ]
 
         second_layout_all_update = [
-            [sg.Combo(count_n[:-1], size=(5, 5), change_submits=True, key='all_column')],
-            [sg.Text('?', size=(4, 1), key='all_column_text'), sg.Text('行の編集')],
-            [sg.Text('アニメタイトル', size=(17, 1)), sg.InputText('', key='all_update_tatal')],
+            [sg.Frame(layout=[
+                [sg.Combo(count_n[:-1], size=(5, 5), change_submits=True, key='all_column'), sg.Text(size=(4, 1), key='all_column_text'), sg.Text('行の編集')]], title='選択')],
+            [sg.Text('アニメタイトル', size=(17, 1)), sg.InputText(key='all_ud_tatal')],
             [sg.Frame(layout=[
                              [sg.Radio('未視聴', "RADIO5"), sg.Radio('視聴中', "RADIO5"), sg.Radio('視聴済み', "RADIO5", default=True)],
                              ], title='視聴状態'), 
-                                sg.Combo((genre_list), default_value='アニメジャンル1', size=(23, 5), key='all_update_genre_first'),
-                                sg.Combo((genre_list), default_value='アニメジャンル2', size=(23, 5), key='all_update_genre_second')],
+                                sg.Combo((genre_list), default_value='アニメジャンル1', size=(23, 5), key='all_ud_genre_first'),
+                                sg.Combo((genre_list), default_value='アニメジャンル2', size=(23, 5), key='all_ud_genre_second')],
             [sg.Frame(layout=[
-            [sg.Radio('1期', "RADIO6", default=True), sg.Radio('2期', "RADIO6"), sg.Radio('3期', "RADIO6"), sg.Radio('4期', "RADIO6"), sg.Radio('5期以上', "RADIO6"), sg.Radio('短編', "RADIO6"), sg.Radio('長期', "RADIO6"), sg.Radio('映画', "RADIO2")]
+            [sg.Radio('1期', "RADIO6", default=True), sg.Radio('2期', "RADIO6"), sg.Radio('3期', "RADIO6"), sg.Radio('4期', "RADIO6"), sg.Radio('5期以上', "RADIO6"), sg.Radio('短編', "RADIO6"), sg.Radio('長期', "RADIO6"), sg.Radio('映画', "RADIO6")]
             ], title='何期か選択')],
             [sg.Button('実行ボタン', pad=(235, 13), size=(17,1), button_color=('midnightblue', '#87cefa'))]
         ]
                 
         second_layout = [
             [sg.TabGroup([
-                [sg.Tab('更新', second_layout_update),
+                [sg.Tab('列更新', second_layout_all_update),
+                sg.Tab('更新', second_layout_update),
                 sg.Tab('消去', second_layout_delete),
-                sg.Tab('列更新', second_layout_all_update)
                 ]]
             )],
             [sg.Frame('シート', second_layout1)],
@@ -258,32 +271,95 @@ while True:
             second_event, second_values = second_Window.read()
 
             # テキストの変換
-            second_Window.FindElement('line_text').Update(second_values['line'])
+            # second_Window.FindElement('line_text').Update(second_values['line'])
 
             second_Window.FindElement('column_text').Update(second_values['column'])
+            second_Window.FindElement('column_text2').Update(second_values['column2'])
+            second_Window.FindElement('column_text3').Update(second_values['column3'])
+            second_Window.FindElement('column_text4').Update(second_values['column4'])
+            second_Window.FindElement('column_text5').Update(second_values['column5'])
+            second_Window.FindElement('column_text6').Update(second_values['column6'])
+            second_Window.FindElement('column_text7').Update(second_values['column7'])
             
             second_Window.FindElement('all_column_text').Update(second_values['all_column'])
             
-            print(second_event, second_values)
+            # print(second_event, second_values)
+            print(second_values)
 
             # 終了ボタン
             if second_event is None or second_event == 'exit':
                 print('eee')
                 break
 
-            # 実行ボタンが押されたときの処理
-            if second_event == '実行':
-                if second_values['line'] == '':
-                    sg.popup_error('列が選択されていません', button_color=('midnightblue', '#87cefa'))
-                    continue
+            # タイトルの更新
+            if second_event == 'title_ud':
                 if second_values['column'] == '':
                     sg.popup_error('行が選択されていません', button_color=('midnightblue', '#87cefa'))
                     continue
+                # print(f"{alphabet_n[1]}{second_values['column'] + 2}")
+                ws.update_acell(f"{alphabet_n[1]}{second_values['column'] + 2}", second_values['title_text'])
+                sg.popup_quick_message('更新が完了しました')
+            # n期の更新
+            if second_event == 'period_ud':
+                if second_values['column2'] == '':
+                    sg.popup_error('行が選択されていません', button_color=('midnightblue', '#87cefa'))
+                    continue
+                ws.update_acell(f"{alphabet_n[2]}{second_values['column2'] + 2}", period(list(second_values.items())[18:26]))
+                sg.popup_quick_message('更新が完了しました')
+            
+            # ジャンル1の更新
+            if second_event == 'genre_ud1':
+                if second_values['column3'] == '':
+                    sg.popup_error('行が選択されていません', button_color=('midnightblue', '#87cefa'))
+                    continue
+                ws.update_acell(f"{alphabet_n[3]}{second_values['column3'] + 2}", genre(second_values['genre_first_ud'], genre_list))
+                sg.popup_quick_message('更新が完了しました')
+            
+            # ジャンル2の更新
+            if second_event == 'genre_ud2':
+                if second_values['column4'] == '':
+                    sg.popup_error('行が選択されていません', button_color=('midnightblue', '#87cefa'))
+                    continue
+                ws.update_acell(f"{alphabet_n[4]}{second_values['column4'] + 2}", genre(second_values['genre_second_ud'], genre_list))
+                sg.popup_quick_message('更新が完了しました')
+
+            # 視聴の更新
+            if second_event == 'status_ud':
+                if second_values['column5'] == '':
+                    sg.popup_error('行が選択されていません', button_color=('midnightblue', '#87cefa'))
+                    continue
+                ws.update_acell(f"{alphabet_n[6]}{second_values['column5'] + 2}", watching_nau(list(second_values.items())[31:34]))
+                sg.popup_quick_message('更新が完了しました')
+
+            # 公式urlの更新
+            if second_event == 'official_url_ud':
+                if second_values['column6'] == '':
+                    sg.popup_error('行が選択されていません', button_color=('midnightblue', '#87cefa'))
+                    continue
+                ws.update_acell(f"{alphabet_n[7]}{second_values['column6'] + 2}", second_values['official_url_text'])
+                sg.popup_quick_message('更新が完了しました')
+
+            # wikiURLの更新
+            if second_event == 'wiki_url_ud':
+                if second_values['column7'] == '':
+                    sg.popup_error('行が選択されていません', button_color=('midnightblue', '#87cefa'))
+                    continue
+                ws.update_acell(f"{alphabet_n[8]}{second_values['column7'] + 2}", second_values['wiki_url_text'])
+                sg.popup_quick_message('更新が完了しました')
+
+            # 実行ボタンが押されたときの処理
+            # if second_event == '実行':
+            #     if second_values['line'] == '':
+            #         sg.popup_error('列が選択されていません', button_color=('midnightblue', '#87cefa'))
+            #         continue
+            #     if second_values['column'] == '':
+            #         sg.popup_error('行が選択されていません', button_color=('midnightblue', '#87cefa'))
+            #         continue
                 
-                x = edit(second_values['line'], seat_display[0])
-                # print(type(second_values['column']))
-                print(f"特定:{x}{second_values['column'] + 2}")
-                sg.popup_quick_message(f'{x}{second_values["column"] + 2}更新が完了しました')
+            #     x = edit(second_values['line'], seat_display[0])
+            #     # print(type(second_values['column']))
+            #     print(f"特定:{x}{second_values['column'] + 2}")
+            #     sg.popup_quick_message(f'{x}{second_values["column"] + 2}更新が完了しました')
             
             # 全体更新の処理
             if second_event == '実行ボタン':
@@ -293,13 +369,13 @@ while True:
                     continue
                 
                 # 更新する処理たち
-                wiki     = wiki_url(second_values['all_update_tatal'])
-                official = official_url(second_values['all_update_tatal']) # 検索中に何かを出してもいいかも知らない
-                writing  = [second_values['all_update_tatal'], period(second_values), genre(second_values['all_update_genre_first'], genre_list), genre(second_values['all_update_genre_second'], genre_list), '年', '四季', watching_nau(second_values), official, wiki]
-                # print(writing)
+                wiki     = wiki_url(second_values['all_ud_tatal'])
+                official2 = official_url(second_values['all_ud_tatal'])
+                writing2  = [hiduke, second_values['all_ud_tatal'], period(list(second_values.items())[7:15]), genre(second_values['all_ud_genre_first'], genre_list), genre(second_values['all_ud_genre_second'], genre_list), '四季', watching_nau(list(second_values.items())[2:5]), official2, wiki]
+                # print(writing2)
                 # print(f'{alphabet_n[0]}{second_values["all_column"] + 2}:{alphabet_n[-1]}{second_values["all_column"] + 2}')
                 ds = ws.range(f'{alphabet_n[0]}{second_values["all_column"] + 2}:{alphabet_n[-1]}{second_values["all_column"] + 2}')
-                for rewrite_location, update_table in zip(ds, writing):
+                for rewrite_location, update_table in zip(ds, writing2):
                     # print(rewrite_location , update_table)
                     rewrite_location.value = update_table
                 ws.update_cells(ds)

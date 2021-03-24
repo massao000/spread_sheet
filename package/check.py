@@ -1,48 +1,50 @@
 def period(values):
-    period = ""
-    if values[4] == True:
-        period = '1期'
-    elif values[5] == True:
-        period = '2期'
-    elif values[6] == True:
-        period = '3期'
-    elif values[7] == True:
-        period = '4期'
-    elif values[8] == True:
-        period = '5期以上'
-    elif values[9] == True:
-        period = '短編'
-    elif values[10] == True:
-        period = '長期'
-    elif values[11] == True:
-        period = '映画'
-    
-    return period
+    for x, i in enumerate(values, 1):
+        if i[1] == True and x == 1:
+            return 1 # 1期
+        elif i[1] == True and x == 2:
+            return 2 # 2期
+        elif i[1] == True and x == 3:
+            return 3 # 3期
+        elif i[1] == True and x == 4:
+            return 4 # 4期
+        elif i[1] == True and x == 5:
+            return 5 # 5期以上
+        elif i[1] == True and x == 6:
+            return 6 # 短編
+        elif i[1] == True and x == 7:
+            return 7 # 長期
+        elif i[1] == True and x == 8:
+            return 8 # 映画
 
 def watching_nau(values):
-    watching = ''
-    if values[1] == True:
-        watching = '未視聴'
-    elif values[2] == True:
-        watching = '視聴中'
-    elif values[3] == True:
-        watching = '視聴済み'
-    return watching
+    for x, i in enumerate(values, 1):
+        if i[1] == True and x == 1:
+            return 1 # 未視聴
+        elif i[1] == True and x == 2:
+            return 2 # 視聴中
+        elif i[1] == True and x == 3:
+            return 3 # 視聴済み
+# def watching_nau(values):
+#     if values[1] == True:
+#         return '未視聴'
+#     elif values[2] == True:
+#         return '視聴中'
+#     elif values[3] == True:
+#         return '視聴済み'
 
 def genre(values, category):
-    name = ""
-    if values == "アニメジャンル1":
-        name = 0
-    elif values == "アニメジャンル2":
-        name = 0
+    if values == "アニメジャンル1" or values == "なし":
+        return 0
+    elif values == "アニメジャンル2" or values == "なし":
+        return 0
     else:
         while True:
-            for number, i in enumerate(category, 1):
+            for number, i in enumerate(category, 0):
                 if i == values:
                     return number
                 else:
                     continue
-    return name
 
 def edit(selection, category):
     while True:
@@ -52,6 +54,34 @@ def edit(selection, category):
                 return i[1]
             else:
                 continue
+
+# def period_second(values):
+#     if values[0] == True:
+#         return '1期'
+#     elif values[1] == True:
+#         return '2期'
+#     elif values[2] == True:
+#         return '3期'
+#     elif values[3] == True:
+#         return '4期'
+#     elif values[4] == True:
+#         return '5期以上'
+#     elif values[5] == True:
+#         return '短編'
+#     elif values[6] == True:
+#         return '長期'
+#     elif values[7] == True:
+#         return '映画'
+
+# def watching_nau_second(values):
+#     for x, i in enumerate(x.items(), 1):
+#         if i[1] == True and x == 1:
+#             return '未視聴'
+#         elif i[1] == True and x == 2:
+#             return '視聴中'
+#         elif i[1] == True and x == 3:
+#             return '視聴済み'
+
 # def setting_check(values):
 #     if values == 'jsonfile':
 #         sg.popup('jsonファイルが選択されていません', button_color=('midnightblue', '#87cefa'))
