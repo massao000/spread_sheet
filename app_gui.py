@@ -16,6 +16,7 @@ x_list = {'SF/ファンタジー': 1, 'メカ/ロボット': 2, 'アクション
               'アイドル': 17, '音楽': 18, '学園': 19, '戦艦': 20
             }
 
+ssss = ['1期', '2期', '3期', '4期', '5期以上', '短編', '長期', '映画']
 
 x_layout = [
         [sg.Text('jsonファイル', size=(17, 1)), sg.Input('ボタンを押してjson選択->'), sg.FileBrowse('ファイル選択', key='jsonfile', button_color=('midnightblue', '#87cefa'), file_types=(("json Files", ".json"),))],
@@ -37,19 +38,20 @@ tab1_layout = [
     ]
 
 tab2_layout =[
+    [sg.Text('表の更新、消去の操作ができます')],
     [sg.Text('シートを表示中はこちらの画面の操作はできません。')],
-    [sg.Text('スプレッドシートの表示'), sg.Button('表示', button_color=('midnightblue', '#87cefa'), key='display')],
+    [sg.Text('スプレッドシートの更新＆表示'), sg.Button('表示', button_color=('midnightblue', '#87cefa'), key='display')],
     ]
 
-tab3_layout =[
-    [sg.Text('作成中', justification='center', font=('Helvetica', 70), size=(11,1))],
-    [sg.Text('取得した表から更新したい所の選択する')],
-    ]
+# tab3_layout =[
+#     [sg.Text('作成中', justification='center', font=('Helvetica', 70), size=(11,1))],
+#     [sg.Text('取得した表から更新したい所の選択する')],
+#     ]
 
-tab4_layout =[
-    [sg.Text('作成中', justification='center', font=('Helvetica', 70), size=(11,1))],
-    [sg.Text('消去したい列を選択し列を消去する')]
-    ]
+# tab4_layout =[
+#     [sg.Text('作成中', justification='center', font=('Helvetica', 70), size=(11,1))],
+#     [sg.Text('消去したい列を選択し列を消去する')]
+#     ]
 
 tab5_layout = [
     [sg.Text('作成中', justification='center', font=('Helvetica', 70), size=(11,1))],
@@ -62,8 +64,8 @@ layout = [
     [sg.TabGroup([
         [sg.Tab('書き込み', tab1_layout), 
         sg.Tab('表示', tab2_layout), 
-        sg.Tab('更新', tab3_layout), 
-        sg.Tab('消去', tab4_layout),
+        # sg.Tab('更新', tab3_layout), 
+        # sg.Tab('消去', tab4_layout),
         sg.Tab('設定', tab5_layout)]]
     )]
     ]
@@ -95,18 +97,19 @@ while True:
         ##### タブ５ #####
     if event == 'link':
         webbrowser.open(window['link'].DisplayText)
-
-    if values['jsonfile'] == '':
-        sg.popup_error('jsonファイルが選択されていません', title='file error')
         continue
 
-    elif values['spkey'] == '':
-        sg.popup_error('スプレッドシートキーが入力されていません', title='file error')
-        continue
+    # if values['jsonfile'] == '':
+    #     sg.popup_error('jsonファイルが選択されていません', title='file error')
+    #     continue
+
+    # elif values['spkey'] == '':
+    #     sg.popup_error('スプレッドシートキーが入力されていません', title='file error')
+    #     continue
     
-    elif values['tatal'] == '':
-        sg.popup_error('アニメタイトルが入力されていません', title='file error')
-        continue
+    # elif values['tatal'] == '':
+    #     sg.popup_error('アニメタイトルが入力されていません', title='file error')
+    #     continue
 
     jsonf = values['jsonfile']
     spread_sheet_key = values['spkey']
@@ -133,6 +136,18 @@ while True:
         continue
 
     if event == '実行ボタン':
+        if values['jsonfile'] == '':
+            sg.popup_error('jsonファイルが選択されていません', title='file error')
+            continue
+
+        elif values['spkey'] == '':
+            sg.popup_error('スプレッドシートキーが入力されていません', title='file error')
+            continue
+        
+        elif values['tatal'] == '':
+            sg.popup_error('アニメタイトルが入力されていません', title='file error')
+            continue
+
         sg.Popup('デバック\n書き込み中にloading画面を出す', event, '\njsonファイル:', values['jsonfile'],'\nスプレッドシートキー:', values['spkey'],
                         '\nシート:', values['sheet'],
                         '\nアニメタイトル', values['tatal'], '\nアニメジャンル1', genre(values['genre_first'], genre_list), '\nアニメジャンル2', genre(values['genre_second'], genre_list),
@@ -140,12 +155,13 @@ while True:
         
         wiki     = wiki_url(values['tatal'])
         official = official_url(values['tatal']) # 検索中に何かを出してもいいかも知らない
+        hiduke = str(datetime.date.today())
 
-        writing  = [[values['tatal'], period(values), genre(values['genre_first'], genre_list), genre(values['genre_second'], genre_list), '年', '四季', watching_nau(values), official, wiki]]
+        writing  = [[values['tatal'], period(values), genre(values['genre_first'], genre_list), genre(values['genre_second'], genre_list), hiduke, '四季', watching_nau(values), official, wiki]]
 
         cell_list = ws.get_all_values()
         row_list = ws.row_values(1)
-        ll = ['タイトル', 'n期ID', 'ジャンルID 1', 'ジャンルID 2', '年月日', '四季コード', '視聴コード', '公式ページ', 'wiki']
+        ll = ['タイトル', 'n期ID', 'ジャンルID 1', 'ジャンルID 2', '書き込み日', '四季コード', '視聴コード', '公式ページ', 'wiki']
         
         if row_list != ll[0]:
             for i, value in zip(string.ascii_letters, ll):
@@ -157,6 +173,7 @@ while True:
             for j in writing:
                 ws.append_row(j)
                 time.sleep(0.8)
+        sg.popup_quick_message('書き込みが完了しました')
 
     if event == 'display': # 2枚のウィンドウが表示される
         yes_no = sg.popup_yes_no('シートを表示中はこちらの画面の操作はできません。', button_color=('midnightblue', '#87cefa'))
@@ -186,10 +203,25 @@ while True:
                     ]
 
         second_layout_update = [
-            [sg.Combo((seat_display[0]), size=(23, 5), change_submits=True, key='line'), sg.Combo(count_n[:-1], size=(5, 5), change_submits=True, key='column')],
-            [sg.Text('?', key='line_text', size=(10, 1)), sg.Text('列の'), sg.Text('?', size=(4, 1), key='column_text'), sg.Text('行の編集')],
-            [sg.Input('')],
-            [sg.Button('実行', button_color=('midnightblue', '#87cefa'))]
+            [sg.Frame(layout=[
+                [sg.Combo((seat_display[0]), size=(23, 5), change_submits=True, key='line'), sg.Combo(count_n[:-1], size=(5, 5), change_submits=True, key='column')],
+                [sg.Text('?', key='line_text', size=(10, 1)), sg.Text('列の'), sg.Text('?', size=(4, 1), key='column_text'), sg.Text('行の編集')]], title='行列の選択')],
+            [sg.Frame(layout=[
+                [sg.Text('アニメタイトル'), sg.InputText(key='')],
+                [sg.Button('実行', button_color=('midnightblue', '#87cefa'))]], title='タイトルの更新'), sg.Frame(layout=[
+                    [sg.Radio('1期', "RADIO6"), sg.Radio('2期', "RADIO6"), sg.Radio('3期', "RADIO6"), sg.Radio('4期', "RADIO6")],
+                    [sg.Radio('5期以上', "RADIO6"), sg.Radio('短編', "RADIO6"), sg.Radio('長期', "RADIO6"), sg.Radio('映画', "RADIO2")],
+                    [sg.Button('実行', key='', button_color=('midnightblue', '#87cefa'))]], title='何期か選択')],
+            [sg.Frame(layout=[
+                [sg.Combo((genre_list), default_value='アニメジャンル1', size=(23, 5), key=''),
+                sg.Combo((genre_list), default_value='アニメジャンル2', size=(23, 5), key='')],
+                [sg.Button('実行', key='', button_color=('midnightblue', '#87cefa'))]], title='ジャンルの更新'), sg.Frame(layout=[
+                    [sg.Radio('未視聴', "RADIO3"), sg.Radio('視聴中', "RADIO3"), sg.Radio('視聴済み', "RADIO3", default=True)],
+                    [sg.Button('実行', key='status', button_color=('midnightblue', '#87cefa'))]], title='視聴状態の更新')],
+            [sg.Frame(layout=[
+                [sg.InputText(key='')],
+                [sg.Button('実行', key='', button_color=('midnightblue', '#87cefa'))]], title='公式ページ変更'),sg.Frame(layout=[
+                [sg.InputText(key='')],[sg.Button('実行', key='', button_color=('midnightblue', '#87cefa'))]], title='wikiの変更')],
         ]
 
         second_layout_delete = [
@@ -201,12 +233,12 @@ while True:
             [sg.Text('?', size=(4, 1), key='all_column_text'), sg.Text('行の編集')],
             [sg.Text('アニメタイトル', size=(17, 1)), sg.InputText('', key='all_update_tatal')],
             [sg.Frame(layout=[
-                             [sg.Radio('未視聴', "RADIO1"), sg.Radio('視聴中', "RADIO1"), sg.Radio('視聴済み', "RADIO1", default=True)],
+                             [sg.Radio('未視聴', "RADIO5"), sg.Radio('視聴中', "RADIO5"), sg.Radio('視聴済み', "RADIO5", default=True)],
                              ], title='視聴状態'), 
                                 sg.Combo((genre_list), default_value='アニメジャンル1', size=(23, 5), key='all_update_genre_first'),
                                 sg.Combo((genre_list), default_value='アニメジャンル2', size=(23, 5), key='all_update_genre_second')],
             [sg.Frame(layout=[
-            [sg.Radio('1期', "RADIO2", default=True), sg.Radio('2期', "RADIO2"), sg.Radio('3期', "RADIO2"), sg.Radio('4期', "RADIO2"), sg.Radio('5期以上', "RADIO2"), sg.Radio('短編', "RADIO2"), sg.Radio('長期', "RADIO2"), sg.Radio('映画', "RADIO2")]
+            [sg.Radio('1期', "RADIO6", default=True), sg.Radio('2期', "RADIO6"), sg.Radio('3期', "RADIO6"), sg.Radio('4期', "RADIO6"), sg.Radio('5期以上', "RADIO6"), sg.Radio('短編', "RADIO6"), sg.Radio('長期', "RADIO6"), sg.Radio('映画', "RADIO2")]
             ], title='何期か選択')],
             [sg.Button('実行ボタン', pad=(235, 13), size=(17,1), button_color=('midnightblue', '#87cefa'))]
         ]
@@ -225,21 +257,21 @@ while True:
         while True:
             second_event, second_values = second_Window.read()
 
-            text_elem = second_Window.FindElement('line_text')
-            text_elem.Update(second_values['line'])
+            # テキストの変換
+            second_Window.FindElement('line_text').Update(second_values['line'])
 
-            text_elem = second_Window.FindElement('column_text')
-            text_elem.Update(second_values['column'])
+            second_Window.FindElement('column_text').Update(second_values['column'])
             
-            text_elem = second_Window.FindElement('all_column_text')
-            text_elem.Update(second_values['all_column'])
+            second_Window.FindElement('all_column_text').Update(second_values['all_column'])
             
             print(second_event, second_values)
 
+            # 終了ボタン
             if second_event is None or second_event == 'exit':
                 print('eee')
                 break
 
+            # 実行ボタンが押されたときの処理
             if second_event == '実行':
                 if second_values['line'] == '':
                     sg.popup_error('列が選択されていません', button_color=('midnightblue', '#87cefa'))
@@ -251,8 +283,27 @@ while True:
                 x = edit(second_values['line'], seat_display[0])
                 # print(type(second_values['column']))
                 print(f"特定:{x}{second_values['column'] + 2}")
-                for j in alphabet_n:
-                    print(f"all {j}{second_values['column'] + 2}")
+                sg.popup_quick_message(f'{x}{second_values["column"] + 2}更新が完了しました')
+            
+            # 全体更新の処理
+            if second_event == '実行ボタン':
+                # 更新する行が選択されていないとpopを表示させる
+                if second_values['all_column'] == '':
+                    sg.popup_error('行が選択されていません', button_color=('midnightblue', '#87cefa'))
+                    continue
+                
+                # 更新する処理たち
+                wiki     = wiki_url(second_values['all_update_tatal'])
+                official = official_url(second_values['all_update_tatal']) # 検索中に何かを出してもいいかも知らない
+                writing  = [second_values['all_update_tatal'], period(second_values), genre(second_values['all_update_genre_first'], genre_list), genre(second_values['all_update_genre_second'], genre_list), '年', '四季', watching_nau(second_values), official, wiki]
+                # print(writing)
+                # print(f'{alphabet_n[0]}{second_values["all_column"] + 2}:{alphabet_n[-1]}{second_values["all_column"] + 2}')
+                ds = ws.range(f'{alphabet_n[0]}{second_values["all_column"] + 2}:{alphabet_n[-1]}{second_values["all_column"] + 2}')
+                for rewrite_location, update_table in zip(ds, writing):
+                    # print(rewrite_location , update_table)
+                    rewrite_location.value = update_table
+                ws.update_cells(ds)
+                sg.popup_quick_message('更新が完了しました')
                 
 
 
