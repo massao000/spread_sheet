@@ -1,30 +1,41 @@
 def period(values):
-    for x, i in enumerate(values, 1):
-        if i[1] == True and x == 1:
+    for number, i in enumerate(values, 1):
+        if i[1] == True and number == 1:
             return 1 # 1期
-        elif i[1] == True and x == 2:
+        elif i[1] == True and number == 2:
             return 2 # 2期
-        elif i[1] == True and x == 3:
+        elif i[1] == True and number == 3:
             return 3 # 3期
-        elif i[1] == True and x == 4:
+        elif i[1] == True and number == 4:
             return 4 # 4期
-        elif i[1] == True and x == 5:
+        elif i[1] == True and number == 5:
             return 5 # 5期以上
-        elif i[1] == True and x == 6:
+        elif i[1] == True and number == 6:
             return 6 # 短編
-        elif i[1] == True and x == 7:
+        elif i[1] == True and number == 7:
             return 7 # 長期
-        elif i[1] == True and x == 8:
+        elif i[1] == True and number == 8:
             return 8 # 映画
 
 def watching_nau(values):
-    for x, i in enumerate(values, 1):
-        if i[1] == True and x == 1:
+    for number, i in enumerate(values, 1):
+        if i[1] == True and number == 1:
             return 1 # 未視聴
-        elif i[1] == True and x == 2:
+        elif i[1] == True and number == 2:
             return 2 # 視聴中
-        elif i[1] == True and x == 3:
+        elif i[1] == True and number == 3:
             return 3 # 視聴済み
+
+def seasons_number(values):
+    for number, i in enumerate(values, 1):
+        if i[1] == True and number == 1:
+            return 1 # 春
+        elif i[1] == True and number == 2:
+            return 2 # 夏
+        elif i[1] == True and number == 3:
+            return 3 # 秋
+        elif i[1] == True and number == 4:
+            return 4 # 冬
 # def watching_nau(values):
 #     if values[1] == True:
 #         return '未視聴'
