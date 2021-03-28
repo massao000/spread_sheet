@@ -17,14 +17,14 @@ genre_list = ['なし', 'SF/ファンタジー', 'メカ/ロボット', 'アク�
 #             }
 
 x_layout = [
-        [sg.Text('jsonファイル', size=(17, 1)), sg.Input('ボタンを押してjson選択->'), sg.FileBrowse('ファイル選択', key='jsonfile', button_color=('midnightblue', '#87cefa'), file_types=(("json Files", ".json"),))],
+        [sg.Text('jsonファイル', size=(17, 1)), sg.Input(''), sg.FileBrowse('ファイル選択', key='jsonfile', button_color=('midnightblue', '#87cefa'), file_types=(("json Files", ".json"),))],
         [sg.Text('スプレッドシートキー', size=(17, 1)), sg.Input('', key='spkey'), sg.FileBrowse('ファイル選択', key='shfile', button_color=('midnightblue', '#87cefa'), file_types=(("txt Files", ".txt"),))],
         # [sg.Text('シート', size=(17, 1)), sg.Combo(('シート１', 'シート２', 'シート３', 'シート４'), default_value='シート１', size=(10, 1), key='sheet')],
         ]
 
 tab1_layout = [
         [sg.Frame(layout=[
-            [sg.Text('アニメタイトル', size=(15, 1)), sg.InputText('銀魂', key='tatal', pad=(1, 0))]
+            [sg.Text('アニメタイトル', size=(15, 1)), sg.InputText('', key='tatal', pad=(1, 0))]
         ], title='タイトル')],
         [sg.Frame(layout=[
             [sg.Radio('なし', "SeasonsRadio", key='seasons0', default=True), sg.Radio('春', "SeasonsRadio", key='seasons1'), sg.Radio('夏', "SeasonsRadio", key='seasons2'), sg.Radio('秋', "SeasonsRadio", key='seasons3'), sg.Radio('冬', "SeasonsRadio", key='seasons4')]
@@ -153,10 +153,10 @@ while True:
             sg.popup_error('アニメタイトルが入力されていません', title='file error')
             continue
 
-        sg.Popup('デバック\n書き込み中にloading画面を出す', event, '\njsonファイル:', values['jsonfile'],'\nスプレッドシートキー:', values['spkey'],
-                        '\nシート:', # values['sheet'],
-                        '\nアニメタイトル', values['tatal'], '\nアニメジャンル1', genre(values['genre_first'], genre_list), '\nアニメジャンル2', genre(values['genre_second'], genre_list),
-                        values)
+        # sg.Popup('デバック\n書き込み中にloading画面を出す', event, '\njsonファイル:', values['jsonfile'],'\nスプレッドシートキー:', values['spkey'],
+        #                 '\nシート:', # values['sheet'],
+        #                 '\nアニメタイトル', values['tatal'], '\nアニメジャンル1', genre(values['genre_first'], genre_list), '\nアニメジャンル2', genre(values['genre_second'], genre_list),
+        #                 values)
         
         wiki     = wiki_url(values['tatal'])
         official = official_url(values['tatal']) # 検索中に何かを出してもいいかも知らない
@@ -247,8 +247,8 @@ while True:
                 [sg.Radio('その他', "SeasonsRadio3", key='ud_seasons0', default=True), sg.Radio('春', "SeasonsRadio3", key='ud_seasons1'), sg.Radio('夏', "SeasonsRadio3", key='ud_seasons2'), sg.Radio('秋', "SeasonsRadio3", key='ud_seasons3'), sg.Radio('冬', "SeasonsRadio3", key='ud_seasons4')],
                 [sg.Button('実行', key='seasons_key', button_color=('midnightblue', '#87cefa'))]], title='四季の更新'), sg.Frame(layout=[
                             [sg.Combo(values=(count_n[:-1]), size=(5, 5), change_submits=True, key='ud_stars_column'), sg.Text(size=(4, 1), key='ud_stars_text'), sg.Text('行の編集')],
-                            [sg.Radio('なし', "RADIO7", key='ud_star1', default=True),
-                            sg.Radio('お気に入り', "RADIO7", text_color='yellow', key='ud_star2')],
+                            [sg.Radio('なし', "StarRADIO2", key='ud_star1', default=True),
+                            sg.Radio('お気に入り', "StarRADIO2", text_color='yellow', key='ud_star2')],
                             [sg.Button('実行', key='ud_star_b', button_color=('midnightblue', '#87cefa'))]
                         ], title='お気に入り')],
             [sg.Frame(layout=[
@@ -267,8 +267,7 @@ while True:
             [sg.Frame(layout=[[sg.Text('アニメタイトル', size=(17, 1)), sg.InputText(key='all_ud_tatal')]], pad=(13, 13), title='タイトル更新')],
             [sg.Frame(layout=[
                 [sg.Radio('その他', "SeasonsRadio2", key='all_seasons0', default=True), sg.Radio('春', "SeasonsRadio2", key='all_seasons1'), sg.Radio('夏', "SeasonsRadio2", key='all_seasons2'), sg.Radio('秋', "SeasonsRadio2", key='all_seasons3'), sg.Radio('冬', "SeasonsRadio2", key='all_seasons4')]], title='四季', pad=(13, 13)), sg.Frame(layout=[
-                    [sg.Radio('なし', "RADIO7", key='all_ud_star1', default=True),
-                    sg.Radio('お気に入り', "RADIO7", text_color='yellow', key='all_ud_star2')]
+                    [sg.Radio('なし', "StarRADIO3", key='all_ud_star1', default=True), sg.Radio('お気に入り', "StarRADIO3", text_color='yellow', key='all_ud_star2')]
                     ], title='お気に入り')],
             [sg.Frame(layout=[
                              [sg.Radio('未視聴', "RADIO5", key='all_viewing_rb1'), sg.Radio('視聴中', "RADIO5", key='all_viewing_rb2'), sg.Radio('視聴済み', "RADIO5", key='all_viewing_rb3', default=True)],
@@ -340,8 +339,8 @@ while True:
             combo_column = [second_values['column'], second_values['column2'], second_values['column3'], second_values['column4'], second_values['column5'], second_values['column6'], second_values['column7'], second_values['column8'], second_values['ud_stars_column'], second_values['all_column'], second_values['seasons_column']]
             change_ud_text(ud_text, combo_column)
             
-            print(second_event, second_values)
-            print(second_values)
+            # print(second_event, second_values)
+            # print(second_values)
             # バラバラ更新
             period_number = period(list(second_values.items()), 'ud_what_period') # n期の更新
             genre_number1 = genre(second_values['genre_first_ud'], genre_list) # ジャンル1の更新
