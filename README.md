@@ -43,7 +43,7 @@ spreadsheet_key.txtにシートURLの
 ![image](https://user-images.githubusercontent.com/69783019/112761838-0d431300-9038-11eb-90cc-f01bd6e4556c.png)
 ![image](https://user-images.githubusercontent.com/69783019/112762046-ce618d00-9038-11eb-86b1-4fba53a70f95.png)
 
-# 使用した ライブラリ
+# 使用した 外部ライブラリ
 * [gspread](https://gspread.readthedocs.io/en/latest/)
  スプレッドシートを操作するライブラリ
 
