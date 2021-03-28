@@ -1,6 +1,9 @@
 # Googleスプレッドシートの操作
 
 ![img](https://user-images.githubusercontent.com/69783019/112752730-5d59af80-900f-11eb-8053-44bacb5e8deb.png)
+![image](https://user-images.githubusercontent.com/69783019/112761836-087e5f00-9038-11eb-9b77-dd48e4dffa70.png)
+![image](https://user-images.githubusercontent.com/69783019/112761838-0d431300-9038-11eb-90cc-f01bd6e4556c.png)
+![image](https://user-images.githubusercontent.com/69783019/112761841-116f3080-9038-11eb-9d8e-99637a680204.png)
 
 ## 概要
 Google APIsを使ってアニメ管理ができるデータベース風のアプリケーションです。
