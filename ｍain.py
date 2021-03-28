@@ -198,13 +198,16 @@ while True:
         # 列の取得をして
         # alphabet = [chr(i) for i in range(65, 65 + len(seat_display))]
         # alphabet = [chr(i) for i in range(65, 65 + 25)]
+        try:
+            count_n = [x for x, i in enumerate(seat_display)]
+            # count_n = [x + 1 for x, i in enumerate(alphabet, -1)]
 
-        count_n = [x for x, i in enumerate(seat_display)]
-        # count_n = [x + 1 for x, i in enumerate(alphabet, -1)]
+            alphabet_n = [(chr(alphabet), number) for number, alphabet in enumerate(range(65, 65 + len(seat_display[0])))]
 
-        alphabet_n = [(chr(alphabet), number) for number, alphabet in enumerate(range(65, 65 + len(seat_display[0])))]
-
-        alphabet_n2 = [chr(i) for x, i in enumerate(range(65, 65 + len(id_list[0])))]
+            alphabet_n2 = [chr(i) for x, i in enumerate(range(65, 65 + len(id_list[0])))]
+        except:
+            sg.popup_error('書き込みを先に行ってください')
+            continue
         
         # alphabet_number = [i for i in range(65, 65 + len(seat_display[0]))]
 
@@ -312,13 +315,13 @@ while True:
         #     sg.popup_quick_message('更新が完了しました')
 
         # 個別update関数
-        def updates(a_number, a_char, number, s_value, text):
-            if number == '':
+        def updates(a_number, a_char, numbers, s_value, text):
+            if numbers == '':
                 sg.popup_error('行が選択されていません')
             else:
-                ws0.update_acell(f"{a_number}{number + 2}", s_value)
-                old_name = seat_display[number + 1][a_char]
-                seat_display[number + 1][a_char] = s_value
+                ws0.update_acell(f"{a_number}{numbers + 2}", s_value)
+                old_name = seat_display[numbers + 1][a_char]
+                seat_display[numbers + 1][a_char] = s_value
                 second_window['-TableUpdate-'].update(values = seat_display[1:])
                 second_window.FindElement(text).Update('')
                 sg.popup_quick_message(f'「{old_name}」->「{seat_display[number + 1][a_char]}」に更新が完了しました')
