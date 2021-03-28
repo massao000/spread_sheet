@@ -1,10 +1,5 @@
 # Googleスプレッドシートの操作
 
-![img](https://user-images.githubusercontent.com/69783019/112752730-5d59af80-900f-11eb-8053-44bacb5e8deb.png)
-![image](https://user-images.githubusercontent.com/69783019/112761836-087e5f00-9038-11eb-9b77-dd48e4dffa70.png)
-![image](https://user-images.githubusercontent.com/69783019/112761838-0d431300-9038-11eb-90cc-f01bd6e4556c.png)
-![image](https://user-images.githubusercontent.com/69783019/112761841-116f3080-9038-11eb-9d8e-99637a680204.png)
-
 ## 概要
 Google APIsを使ってアニメ管理ができるデータベース風のアプリケーションです。
 
@@ -35,13 +30,18 @@ spreadsheet_key.txtにシートURLの
 {**xxxxxxxx**}部分を保存しておく
 
 # 機能
-動作YouTube[]()
+動作YouTube[demo](https://www.youtube.com/embed/DTH6uXplb9A)
 
 * スプレッドシートの書き込み
 * スプレッドシートの書き換え
 * スプレッドシートの個別書き換え
 * スプレッドシートの行の消去
 
+# メニュー画面
+![img](https://user-images.githubusercontent.com/69783019/112752730-5d59af80-900f-11eb-8053-44bacb5e8deb.png)
+![image](https://user-images.githubusercontent.com/69783019/112761836-087e5f00-9038-11eb-9b77-dd48e4dffa70.png)
+![image](https://user-images.githubusercontent.com/69783019/112761838-0d431300-9038-11eb-90cc-f01bd6e4556c.png)
+![image](https://user-images.githubusercontent.com/69783019/112762046-ce618d00-9038-11eb-86b1-4fba53a70f95.png)
 
 # 使用した ライブラリ
 * [gspread](https://gspread.readthedocs.io/en/latest/)
