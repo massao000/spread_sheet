@@ -17,9 +17,9 @@ Google APIsを使ってアニメ管理ができるデータベース風のアプ
 {**xxxxxxxx**}部分を保存しておく
 
 # 動作＆機能
-main.exeファイルを使えばライブラリのDLは不要です。
-
 ![GIF](https://user-images.githubusercontent.com/69783019/114362948-dc73e980-9bb2-11eb-91fa-ad4d3c670857.gif)
+
+main.exeファイルを使えばライブラリのDLは不要です。
 
 書き込み、書き換え、個別書き換え、行の消去がどう動くか確認用に[YouTube](https://www.youtube.com/embed/DTH6uXplb9A)に動画を載せておきました
 
