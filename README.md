@@ -4,6 +4,9 @@
 ## 概要
 Google APIsを使ってアニメ管理ができるデータベース風のアプリケーションです。
 
+[![YouTub](https://user-images.githubusercontent.com/69783019/115853094-c04e3300-a463-11eb-9a26-93709dc60787.jpg)](https://youtu.be/w8SghIEXhXY)
+
+書き込み、書き換え、個別書き換え、行の消去がどう動くか確認用
 
 # 事前準備
 * スプレッドシートを操作できるように [Google Cloud Platform](https://console.cloud.google.com/apis/library?folder=&organizationId=&project=tidal-mode-303814) の設定
@@ -21,7 +24,6 @@ Google APIsを使ってアニメ管理ができるデータベース風のアプ
 
 main.exeファイルを使えばライブラリのDLは不要です。
 
-書き込み、書き換え、個別書き換え、行の消去がどう動くか確認用に[YouTube](https://www.youtube.com/embed/DTH6uXplb9A)に動画を載せておきました
 
 * スプレッドシートを見なくても操作が可能になっている
 
