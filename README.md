@@ -1,12 +1,11 @@
 
 # Googleスプレッドシートの操作
+[![YouTub](https://user-images.githubusercontent.com/69783019/115862464-28564680-a46f-11eb-92e5-808735bf9aab.jpg)](https://youtu.be/w8SghIEXhXY)
+
 
 ## 概要
 Google APIsを使ってアニメ管理ができるデータベース風のアプリケーションです。
 
-[![YouTub](https://user-images.githubusercontent.com/69783019/115853094-c04e3300-a463-11eb-9a26-93709dc60787.jpg)](https://youtu.be/w8SghIEXhXY)
-
-書き込み、書き換え、個別書き換え、行の消去がどう動くか確認用
 
 # 事前準備
 * スプレッドシートを操作できるように [Google Cloud Platform](https://console.cloud.google.com/apis/library?folder=&organizationId=&project=tidal-mode-303814) の設定
