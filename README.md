@@ -1,3 +1,24 @@
+<h1 align = "center">
+  <br>
+  <a href="img" ><img src = "https://user-images.githubusercontent.com/69783019/116526223-54ad0f80-a914-11eb-8210-7ab2b8c398e6.png" width="500" alt = " ArminC AutoExec "></a>
+</h1>
+<h4 align = "center"></h4>
+<p align="center">
+  <a href="https://img.shields.io/badge/Python-v3.9.0-blue">
+    <img src="https://img.shields.io/badge/Python-v3.9.0-blue"alt="python">
+  </a>
+  <a href="https://img.shields.io/badge/requests-v2.25.0-blue">
+    <img src="https://img.shields.io/badge/requests-v2.25.0-blue"alt="python">
+  </a>
+  <a href="https://img.shields.io/badge/gspread-v3.6.0-blue">
+    <img src="https://img.shields.io/badge/gspread-v3.6.0-blue"alt="python">
+  </a><br>
+  <a href="https://img.shields.io/badge/oauth2client-v4.1.3-blue">
+    <img src="https://img.shields.io/badge/oauth2client-v4.1.3-blue"alt="python">
+  </a>
+  <a href="https://img.shields.io/badge/beautifulsoup4-v4.9.3-blue">
+    <img src="https://img.shields.io/badge/beautifulsoup4-v4.9.3-blue"alt="python">
+  </a>
 
 # Googleスプレッドシートの操作
 [![YouTub](https://user-images.githubusercontent.com/69783019/115862464-28564680-a46f-11eb-92e5-808735bf9aab.jpg)](https://youtu.be/w8SghIEXhXY)
