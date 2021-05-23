@@ -19,6 +19,9 @@
   <a href="https://img.shields.io/badge/beautifulsoup4-v4.9.3-blue">
     <img src="https://img.shields.io/badge/beautifulsoup4-v4.9.3-blue"alt="python">
   </a>
+  <a href="https://img.shields.io/badge/PySimpleGUI-4.39.1-blue">
+    <img src="https://img.shields.io/badge/PySimpleGUI-4.39.1-blue"alt="PySimpleGUI">
+  </a>
 
 # YouTube Demo
 [![YouTub](https://user-images.githubusercontent.com/69783019/115862464-28564680-a46f-11eb-92e5-808735bf9aab.jpg)](https://youtu.be/w8SghIEXhXY)
